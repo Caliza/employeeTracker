@@ -97,6 +97,12 @@ async function viewAllEmployees() {
     appMenu()
 }
 
+async function addADepartment() {
+    const addDepartment = await db.query('insert into department')
+    console.table(department)
+    appMenu()
+}
+
 function quit() {
     console.log('Good Bye!!');
     process.exit();
