@@ -98,7 +98,7 @@ async function viewAllEmployees() {
 }
 
 async function addADepartment() {
-    const departments = await db.query('insert into department values()')
+    const departments = await db.query("insert into department (name) values('new_department')")
     console.table(departments)
     appMenu()
 }
