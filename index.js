@@ -98,8 +98,8 @@ async function viewAllEmployees() {
 }
 
 async function addADepartment() {
-    const addDepartment = await db.query('insert into department')
-    console.table(department)
+    const departments = await db.query('insert into department values()')
+    console.table(departments)
     appMenu()
 }
 
