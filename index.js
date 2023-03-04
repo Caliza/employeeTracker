@@ -40,7 +40,7 @@ async function appMenu() {
                     value: 'UPDATE_AN_EMPLOYEE_ROLE'
                 },
             ]
-        }
+        },
     ]).then(res => {
         console.log('beta', 
         res);
@@ -100,13 +100,29 @@ async function viewAllEmployees() {
 async function addADepartment() {
     const departments = await db.query("insert into department (name) values('new_department')")
     console.table(departments)
-    appMenu()
+    addDepartment()
+}
+
+async function addDepartment() {
+    const answers = await prompt ([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'Department name?'
+        },
+    ]).then((answers) =>{
+        console.log('beta1', answers);
+        appMenu()
+    })
+
 }
 
 function quit() {
     console.log('Good Bye!!');
     process.exit();
 }
+
+
 
 appMenu();
 
