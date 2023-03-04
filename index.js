@@ -97,12 +97,6 @@ async function viewAllEmployees() {
     appMenu()
 }
 
-// async function addADepartment() {
-//     const departments = await db.query("insert into department (name) values('new_department')")
-//     console.table(departments)
-//     addDepartment()
-// }
-
 async function addADepartment() {
     const answers = await prompt ([
         {
@@ -111,12 +105,52 @@ async function addADepartment() {
             message: 'Department name?'
         },
     ]).then((answers) =>{
-        const departments = db.query(`insert into department (name) values('${answers}')`)
+        const departments = db.query(`insert into department SET ?`, answers)
         console.log('beta1', answers);
-        appMenu()
+        addAnother()
     })
-
 }
+
+async function addARole(){
+    const answers = await prompt ([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'Add title?'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Add salary?'
+        },
+        {
+            type: 'input',
+            name: 'department',
+            message: 'Add department?'
+        },
+    ]).then((answers) =>{
+        const role = db.query(`insert into role SET ?`, (answers.title, answers.salary, answers.department))
+        console.log('beta1', answers);
+        addAnother()
+    })
+}
+
+async function addAnother() {
+    const answer = await prompt([
+        {
+            type: 'list',
+            name: 'choice',
+            message: 'Do you want to do something else?',
+            choices: ['Yes', 'No'],
+        }
+    ]).then((answer) => {
+        if (answer.choice === "Yes") {
+            appMenu();
+        } else {
+            quit();
+        }
+    })
+  }
 
 function quit() {
     console.log('Good Bye!!');
