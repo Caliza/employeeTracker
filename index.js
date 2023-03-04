@@ -97,13 +97,13 @@ async function viewAllEmployees() {
     appMenu()
 }
 
-async function addADepartment() {
-    const departments = await db.query("insert into department (name) values('new_department')")
-    console.table(departments)
-    addDepartment()
-}
+// async function addADepartment() {
+//     const departments = await db.query("insert into department (name) values('new_department')")
+//     console.table(departments)
+//     addDepartment()
+// }
 
-async function addDepartment() {
+async function addADepartment() {
     const answers = await prompt ([
         {
             type: 'input',
@@ -111,6 +111,7 @@ async function addDepartment() {
             message: 'Department name?'
         },
     ]).then((answers) =>{
+        const departments = db.query(`insert into department (name) values('${answers}')`)
         console.log('beta1', answers);
         appMenu()
     })
