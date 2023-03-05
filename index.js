@@ -1,8 +1,12 @@
 const { prompt } = require("inquirer");
 const db = require('./db/connection');
+// const db1 = require('./db');
 require('console.table');
 const util = require('util');
 db.query = util.promisify(db.query);
+// const findAllDepartments = db.query(`slect * from department`);
+
+// console.log('beta2', findAllDepartments );
 
 async function appMenu() {
     const answer = await prompt([
@@ -112,7 +116,14 @@ async function addADepartment() {
 }
 
 async function addARole(){
+    const departmentChoices = await db.query(`select * from department`);
     const answers = await prompt ([
+        // {
+        //     type: "list",
+        //     name: "department_id",
+        //     message: "Which department does the role belong to?",
+        //     choices: departmentChoices
+        // },
         {
             type: 'input',
             name: 'title',
@@ -124,9 +135,10 @@ async function addARole(){
             message: 'Add salary?'
         },
         {
-            type: 'input',
-            name: 'department',
-            message: 'Add department?'
+             type: "list",
+            name: "department_id",
+            message: "Which department does the role belong to?",
+            choices: departmentChoices
         },
     ]).then((answers) =>{
         const role = db.query(`insert into role SET ?`, (answers.title, answers.salary, answers.department))
@@ -136,6 +148,7 @@ async function addARole(){
 }
 
 async function addAnother() {
+    
     const answer = await prompt([
         {
             type: 'list',
