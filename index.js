@@ -46,8 +46,8 @@ async function appMenu() {
             ]
         },
     ]).then(res => {
-        console.log('beta', 
-        res);
+        console.log('beta',
+            res);
         let choice = res.choice;
 
         switch (choice) {
@@ -102,30 +102,23 @@ async function viewAllEmployees() {
 }
 
 async function addADepartment() {
-    const answers = await prompt ([
+    const answers = await prompt([
         {
             type: 'input',
             name: 'name',
             message: 'Department name?'
         },
-    ]).then((answers) =>{
+    ]).then((answers) => {
         const departments = db.query(`insert into department SET ?`, answers)
         console.log('beta1', answers);
         addAnother()
     })
 }
 
-async function addARole(){
+async function addARole() {
     const departmentChoices = await db.query(`select id as value, name from department`);
     console.log(departmentChoices);
-    const answers = await prompt ([
-        // {
-        //     type: "list",
-        //     name: "department_id",
-        //     message: "Which department does the role belong to?",
-        //     choices: departmentChoices
-        // },
-        
+    const answers = await prompt([
         {
             type: 'input',
             name: 'title',
@@ -142,16 +135,48 @@ async function addARole(){
             message: "Which department does the role belong to?",
             choices: departmentChoices
         },
-    ]).then((answers) =>{
+    ]).then((answers) => {
         console.log('beta1', answers);
         const role = db.query(`insert into role SET ?`, answers)
-        
+
+        addAnother()
+    })
+}
+
+async function addAnEmployee() {
+    const newEmployee = await db.query(`select * from employee`);
+    console.log(newEmployee);
+    const answers = await prompt([
+        {
+            type: 'input',
+            name: 'first_name',
+            message: 'Employees first name?'
+        },
+        {
+            type: 'input',
+            name: 'last_name',
+            message: 'Employees lastname?'
+        },
+        {
+            type: 'input',
+            name: 'role_id',
+            message: 'Role id?'
+        },
+        {
+            type: 'input',
+            name: 'manager_id',
+            message: 'Manager id?'
+        },
+    ]).then((answers) => {
+        console.log('beta1', answers);
+        const employee = db.query(`insert into employee SET ?`, answers)
+
         addAnother()
     })
 }
 
 async function addAnother() {
-    
+
     const answer = await prompt([
         {
             type: 'list',
@@ -166,7 +191,7 @@ async function addAnother() {
             quit();
         }
     })
-  }
+}
 
 function quit() {
     console.log('Good Bye!!');
