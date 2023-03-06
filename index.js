@@ -116,7 +116,8 @@ async function addADepartment() {
 }
 
 async function addARole(){
-    const departmentChoices = await db.query(`select * from department`);
+    const departmentChoices = await db.query(`select id as value, name from department`);
+    console.log(departmentChoices);
     const answers = await prompt ([
         // {
         //     type: "list",
@@ -124,6 +125,7 @@ async function addARole(){
         //     message: "Which department does the role belong to?",
         //     choices: departmentChoices
         // },
+        
         {
             type: 'input',
             name: 'title',
@@ -135,14 +137,15 @@ async function addARole(){
             message: 'Add salary?'
         },
         {
-             type: "list",
+            type: "list",
             name: "department_id",
             message: "Which department does the role belong to?",
             choices: departmentChoices
         },
     ]).then((answers) =>{
-        const role = db.query(`insert into role SET ?`, (answers.title, answers.salary, answers.department))
         console.log('beta1', answers);
+        const role = db.query(`insert into role SET ?`, answers)
+        
         addAnother()
     })
 }
