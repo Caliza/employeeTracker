@@ -90,13 +90,22 @@ async function viewAllDepartments() {
 }
 
 async function viewAllRoles() {
-    const role = await db.query('select * from role')
+    const role = await db.query('select role.id, role.title, role.salary, department.name as department_name from role left join department on department.id = role.department_id')
     console.table(role)
     appMenu()
 }
 
 async function viewAllEmployees() {
-    const employee = await db.query('select * from employee')
+    const employee = await db.query(`SELECT employee.id, employee.first_name AS "first name", employee.last_name 
+    AS "last name", role.title, department.name AS department, role.salary, 
+    concat(manager.first_name, " ", manager.last_name) AS manager
+    FROM employee
+    LEFT JOIN role
+    ON employee.role_id = role.id
+    LEFT JOIN department
+    ON role.department_id = department.id
+    LEFT JOIN employee manager
+    ON manager.id = employee.manager_id`)
     console.table(employee)
     appMenu()
 }
@@ -144,7 +153,8 @@ async function addARole() {
 }
 
 async function addAnEmployee() {
-    const newEmployee = await db.query(`select * from employee`);
+    const newEmployee = await db.query(`select id as value, concat(first_name, ' ', last_name) as name from employee`);
+    const roles = await db.query(`select id as value, title as name from role`)
     console.log(newEmployee);
     const answers = await prompt([
         {
@@ -158,14 +168,16 @@ async function addAnEmployee() {
             message: 'Employees lastname?'
         },
         {
-            type: 'input',
+            type: 'list',
             name: 'role_id',
-            message: 'Role id?'
+            message: 'Role id?',
+            choices: roles
         },
         {
-            type: 'input',
+            type: 'list',
             name: 'manager_id',
-            message: 'Manager id?'
+            message: 'Manager id?',
+            choices: newEmployee
         },
     ]).then((answers) => {
         console.log('beta1', answers);
@@ -173,6 +185,28 @@ async function addAnEmployee() {
 
         addAnother()
     })
+}
+
+async function updateAnEmployeeRole() {
+    const newEmployee = await db.query(`select id as value, concat(first_name, ' ', last_name) as name from employee`);
+    const roles = await db.query(`select id as value, title as name from role`)
+    const answers = await prompt([
+        {
+            type: 'list',
+            name: 'employee_id',
+            message: 'Which employee are we updating?',
+            choices: newEmployee
+        },
+        {
+            type: 'list',
+            name: 'role_id',
+            message: 'What is their new role?',
+            choices: roles
+        },
+    ])
+    await db.query(`update employee set role_id = ? where id = ?`, [answers.role_id, answers.employee_id])
+    console.log('employee updated');
+    appMenu();
 }
 
 async function addAnother() {
