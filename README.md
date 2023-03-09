@@ -34,7 +34,7 @@
 
 
     
- ![teamProfileGenerator](./assets/images/teamroster.jpg)
+ ![employeeTracker](./assets/images/employeeTracker.jpg)
 
 ## Links
 
