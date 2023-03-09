@@ -1,12 +1,8 @@
 const { prompt } = require("inquirer");
 const db = require('./db/connection');
-// const db1 = require('./db');
 require('console.table');
 const util = require('util');
 db.query = util.promisify(db.query);
-// const findAllDepartments = db.query(`slect * from department`);
-
-// console.log('beta2', findAllDepartments );
 
 async function appMenu() {
     const answer = await prompt([
@@ -206,7 +202,7 @@ async function updateAnEmployeeRole() {
     ])
     await db.query(`update employee set role_id = ? where id = ?`, [answers.role_id, answers.employee_id])
     console.log('employee updated');
-    appMenu();
+    addAnother();
 }
 
 async function addAnother() {
@@ -235,7 +231,3 @@ function quit() {
 
 
 appMenu();
-
-// if (answer.choice === 'View All Departments') {
-//     viewDepartments()
-// }`

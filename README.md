@@ -39,8 +39,8 @@
 ## Links
 
 - GitHub: https://github.com/Caliza/employeeTracker
-- Google Drive: 
-- Castify: 
+- Google Drive: https://drive.google.com/file/d/10l_gkr1Eiz-e-IhO33B7VrtaJuQF7hcs/view?usp=sharing
+- Castify: https://watch.screencastify.com/v/yvbO13kNbc8srSm2vsJ3
 
 ## Questions
 
